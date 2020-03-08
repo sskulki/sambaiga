@@ -1,10 +1,10 @@
 ---
 layout: page
-title: About Me
+title: About
 permalink: /about/
 ---
 
-![](images/banner_small.png "https://github.com/fastai/fastpages")
+![]({{ site.baseurl }}/images/banner_small.png)
 
 **Anthony Faustine**  is a [Data Scientist at CeADAR (UCD), Dublin, Ireland](https://www.ceadar.ie/) with over four years of successful experience in data analytics and Artificial Intelligence techniques for multiple applications. He effectively researches techniques for novel approaches to problems and develops prototypes to assess their viability. Although Anthony is a person who takes the initiative, he has a strong team-work spirit with experience of working in a highly international environment. 
 

@@ -4,7 +4,7 @@ search_exclude: true
 ---
 
 
-![](images/banner_larger.png "https://github.com/fastai/fastpages")
+![]({{ site.baseurl }}/images/banner_larger.png)
 
  
 
