@@ -4,10 +4,12 @@ title: About Me
 permalink: /about/
 ---
 
-This is where you put the contents of your *About* page. Like all your pages, it's in [Markdown](https://guides.github.com/features/mastering-markdown/) format.
+**Anthony Faustine**  is a [Data Scientist at CeADAR (UCD), Dublin, Ireland](https://www.ceadar.ie/) with over four years of successful experience in data analytics and Artificial Intelligence techniques for multiple applications. He effectively researches techniques for novel approaches to problems and develops prototypes to assess their viability. Although Anthony is a person who takes the initiative, he has a strong team-work spirit with experience of working in a highly international environment. 
 
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
+At CeADER, Anthony is devising and implementing data analytics/AI technical solutions for multiple application domains. He is also involved in the research and development of the applicability of Artificial Intelligence for [Earth Observation](https://en.wikipedia.org/wiki/Earth_observation) (AI4EO).
 
+ Mr Faustine, received the B.sc. Degree in Electronics Science and Communication from the University of Dar es Salaam, Tanzania, and the M.sc. Degree in Telecommunications Engineering from the University of Dodoma, Tanzania, in 2010. From 2010 to 2017, he worked as an assistant lecturer at the University of Dodoma, Tanzania, where he was involved in several research projects within the context of ICT4D. 
 
+In 2017, Anthony joined IDLab, imec research group of the University of Ghent, in Belgium as a Ph.D. Machine learning researcher advised by [Tom Dhaene](http://sumo.intec.ugent.be/?q=tdhaene) and [Dirk Deschrijver](http://sumo.intec.ugent.be/members?q=ddeschrijver). His research focused on machine learning techniques applied to energy smart-meter data. He develops methods to identify active appliances and extract their corresponding power consumption from aggregate power [(energy-disaggregation)](https://en.wikipedia.org/wiki/Nonintrusive_load_monitoring) in residential and industrial buildings. 
 
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
+His research interests lie in the intersections between Computational Sustainability and Artificial Intelligence. He works towards bridging the gap between laboratory and real-world applicability of machine learning for sustainable development.
