@@ -156,7 +156,7 @@ window.onload = wrap_img;
 <li>badges: true</li>
 <li>comments: true</li>
 <li>categories: [jupyter]</li>
-<li>image: images/ppl-pyro-intro.png</li>
+<li>image: images/vi.png</li>
 </ul>
 
 </div>
@@ -210,7 +210,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>From the given  model above , <code>pyro.param</code> designate model parameters that we would like to optimize. Observations are denoted by the obs= keyword argument to pyro.sample. This specifies the likelihood function. Instead of log transforming the data, we use a LogNormal distribution. The observations are conditionally independent given the latent random variable slope and intercept. To explicitly mark this in Pyro, <strong>plate</strong> statement is used to construct conditionally independent sequences of variables.</p>
+<p>From the given  model above , <strong>pyro.param</strong> designate model parameters that we would like to optimize. Observations are denoted by the obs= keyword argument to pyro.sample. This specifies the likelihood function. Instead of log transforming the data, we use a LogNormal distribution. The observations are conditionally independent given the latent random variable slope and intercept. To explicitly mark this in Pyro, <strong>plate</strong> statement is used to construct conditionally independent sequences of variables.</p>
 <div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">subsample_size</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span> <span class="k">as</span> <span class="n">ind</span><span class="p">:</span>
     <span class="c1"># ...do conditionally independent stuff with ind...</span>
 </pre></div>
