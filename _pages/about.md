@@ -4,6 +4,8 @@ title: About Me
 permalink: /about/
 ---
 
+![](images/banner_small.png "https://github.com/fastai/fastpages")
+
 **Anthony Faustine**  is a [Data Scientist at CeADAR (UCD), Dublin, Ireland](https://www.ceadar.ie/) with over four years of successful experience in data analytics and Artificial Intelligence techniques for multiple applications. He effectively researches techniques for novel approaches to problems and develops prototypes to assess their viability. Although Anthony is a person who takes the initiative, he has a strong team-work spirit with experience of working in a highly international environment. 
 
 At CeADER, Anthony is devising and implementing data analytics/AI technical solutions for multiple application domains. He is also involved in the research and development of the applicability of Artificial Intelligence for [Earth Observation](https://en.wikipedia.org/wiki/Earth_observation) (AI4EO).

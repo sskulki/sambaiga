@@ -4,7 +4,7 @@ search_exclude: true
 ---
 
 
-![](images/banner.png "https://github.com/fastai/fastpages")
+![](images/banner_larger.png "https://github.com/fastai/fastpages")
 
  
 
