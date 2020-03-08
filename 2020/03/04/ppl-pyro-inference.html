@@ -158,20 +158,8 @@ window.onload = wrap_img;
 <li>categories: [jupyter]</li>
 <li>image: images/vi.png</li>
 </ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>In the previous post we introduced pyro and its building blocks such as schotastic function, primitive sample and param primitive statement, model and guide. We also defined pyro model and use it to generate data, learn from data and predict future observations.</p>
 <p>In this section, we will learn in details about inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>Consider a previous poison regression model</p>
 
 </div>
@@ -189,8 +177,6 @@ window.onload = wrap_img;
 <span class="kn">import</span> <span class="nn">pyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
 <span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">constraints</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-
-
 
 <span class="k">def</span> <span class="nf">model_global_trend</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">&#39;slope&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.</span><span class="p">))</span>
@@ -210,7 +196,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>From the given  model above , <strong>pyro.param</strong> designate model parameters that we would like to optimize. Observations are denoted by the obs= keyword argument to pyro.sample. This specifies the likelihood function. Instead of log transforming the data, we use a LogNormal distribution. The observations are conditionally independent given the latent random variable slope and intercept. To explicitly mark this in Pyro, <strong>plate</strong> statement is used to construct conditionally independent sequences of variables.</p>
+<h2 id="Plate-statement">Plate statement<a class="anchor-link" href="#Plate-statement"> </a></h2><p>From the given  model above , <strong>pyro.param</strong> designate model parameters that we would like to optimize. Observations are denoted by the obs= keyword argument to pyro.sample. This specifies the likelihood function. Instead of log transforming the data, we use a LogNormal distribution. The observations are conditionally independent given the latent random variable slope and intercept. To explicitly mark this in Pyro, <strong>plate</strong> statement is used to construct conditionally independent sequences of variables.</p>
 <div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">subsample_size</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span> <span class="k">as</span> <span class="n">ind</span><span class="p">:</span>
     <span class="c1"># ...do conditionally independent stuff with ind...</span>
 </pre></div>
