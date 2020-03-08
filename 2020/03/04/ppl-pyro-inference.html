@@ -151,7 +151,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Automatic-Inference-in-Pyro">Automatic Inference in Pyro<a class="anchor-link" href="#Automatic-Inference-in-Pyro"> </a></h1><ul>
+<h1 id="Inference-in-Pyro">Inference in Pyro<a class="anchor-link" href="#Inference-in-Pyro"> </a></h1><ul>
 <li>toc: true </li>
 <li>badges: true</li>
 <li>comments: true</li>
@@ -170,27 +170,6 @@ window.onload = wrap_img;
 </div>
 </div>
 </div>
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">pyro</span>
-<span class="kn">import</span> <span class="nn">pyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
-<span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">constraints</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Consider a previous poison regression model</p>
@@ -205,7 +184,15 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">model_global_trend</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pyro</span>
+<span class="kn">import</span> <span class="nn">pyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">constraints</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+
+
+<span class="k">def</span> <span class="nf">model_global_trend</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">&#39;slope&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.</span><span class="p">))</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">constraints</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">positive</span><span class="p">)</span>
     <span class="n">intercept</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">13.</span><span class="p">))</span>
@@ -221,47 +208,32 @@ window.onload = wrap_img;
 </div>
     
 
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">From</span> <span class="n">the</span> <span class="n">given</span>  <span class="n">model</span> <span class="n">above</span> <span class="p">,</span> <span class="err">```</span><span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="err">```</span> <span class="n">designate</span> <span class="n">model</span> <span class="n">parameters</span> <span class="n">that</span> <span class="n">we</span> <span class="n">would</span> <span class="n">like</span> <span class="n">to</span> <span class="n">optimize</span><span class="o">.</span> <span class="n">Observations</span> <span class="n">are</span> <span class="n">denoted</span> <span class="n">by</span> <span class="n">the</span> <span class="n">obs</span><span class="o">=</span> <span class="n">keyword</span> <span class="n">argument</span> <span class="n">to</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span> <span class="n">This</span> <span class="n">specifies</span> <span class="n">the</span> <span class="n">likelihood</span> <span class="n">function</span><span class="o">.</span> <span class="n">Instead</span> <span class="n">of</span> <span class="n">log</span> <span class="n">transforming</span> <span class="n">the</span> <span class="n">data</span><span class="p">,</span> <span class="n">we</span> <span class="n">use</span> <span class="n">a</span> <span class="n">LogNormal</span> <span class="n">distribution</span><span class="o">.</span> <span class="n">The</span> <span class="n">observations</span> <span class="n">are</span> <span class="n">conditionally</span> <span class="n">independent</span> <span class="n">given</span> <span class="n">the</span> <span class="n">latent</span> <span class="n">random</span> <span class="n">variable</span> <span class="n">slope</span> <span class="ow">and</span> <span class="n">intercept</span><span class="o">.</span> <span class="n">To</span> <span class="n">explicitly</span> <span class="n">mark</span> <span class="n">this</span> <span class="ow">in</span> <span class="n">Pyro</span><span class="p">,</span> <span class="o">**</span><span class="n">plate</span><span class="o">**</span> <span class="n">statement</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">to</span> <span class="n">construct</span> <span class="n">conditionally</span> <span class="n">independent</span> <span class="n">sequences</span> <span class="n">of</span> <span class="n">variables</span><span class="o">.</span>
-
-<span class="err">```</span><span class="n">python</span>
-<span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">subsample_size</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span> <span class="k">as</span> <span class="n">ind</span><span class="p">:</span>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the given  model above , <code>pyro.param</code> designate model parameters that we would like to optimize. Observations are denoted by the obs= keyword argument to pyro.sample. This specifies the likelihood function. Instead of log transforming the data, we use a LogNormal distribution. The observations are conditionally independent given the latent random variable slope and intercept. To explicitly mark this in Pyro, <strong>plate</strong> statement is used to construct conditionally independent sequences of variables.</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">subsample_size</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span> <span class="k">as</span> <span class="n">ind</span><span class="p">:</span>
     <span class="c1"># ...do conditionally independent stuff with ind...</span>
-<span class="err">```</span>
-<span class="n">However</span> <span class="n">compared</span> <span class="n">to</span> <span class="err">``</span><span class="nb">range</span><span class="p">()</span><span class="err">``</span> <span class="n">each</span> <span class="n">invocation</span> <span class="n">of</span> <span class="o">**</span><span class="n">plate</span><span class="o">**</span> <span class="n">requires</span> <span class="n">the</span> <span class="n">user</span> <span class="n">to</span> <span class="n">provide</span> <span class="n">a</span> <span class="n">unique</span> <span class="n">name</span><span class="o">.</span> <span class="n">The</span> <span class="o">**</span><span class="n">plate</span><span class="o">**</span>  <span class="n">statement</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">either</span> <span class="n">sequentially</span> <span class="k">as</span> <span class="n">a</span> <span class="n">generator</span> <span class="ow">or</span> <span class="ow">in</span> <span class="n">parallel</span> <span class="k">as</span> <span class="n">a</span> <span class="n">context</span> <span class="n">manager</span><span class="o">.</span> <span class="n">Sequential</span> <span class="n">plate</span> <span class="ow">is</span> <span class="n">similar</span> <span class="n">to</span> <span class="err">``</span><span class="nb">range</span><span class="p">()</span><span class="err">``</span><span class="ow">in</span> <span class="n">that</span> <span class="n">it</span> <span class="n">generates</span> <span class="n">a</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">values</span><span class="o">.</span> 
-<span class="err">```</span><span class="n">python</span>
- <span class="c1"># This version declares sequential independence and subsamples data:</span>
+</pre></div>
+<p>However compared to <code>range()</code> each invocation of <strong>plate</strong> requires the user to provide a unique name. The <strong>plate</strong>  statement can be used either sequentially as a generator or in parallel as a context manager. Sequential plate is similar to <code>range()</code>in that it generates a sequence of values.</p>
+<div class="highlight"><pre><span></span><span class="c1"># This version declares sequential independence and subsamples data:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">plate</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">subsample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
          <span class="k">if</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>  <span class="c1"># Control flow in this example prevents vectorization.</span>
                 <span class="n">obs</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="s1">&#39;obs_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-<span class="err">```</span>
-<span class="n">Vectorized</span> <span class="n">plate</span> <span class="ow">is</span> <span class="n">similar</span> <span class="n">to</span> <span class="err">``</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">()</span><span class="err">``</span> <span class="ow">in</span> <span class="n">that</span> <span class="n">it</span> <span class="n">yields</span> <span class="n">an</span> <span class="n">array</span> <span class="n">of</span> <span class="n">indices</span> <span class="n">by</span> <span class="n">which</span> <span class="n">other</span> <span class="n">tensors</span> <span class="n">can</span> <span class="n">be</span> <span class="n">indexed</span><span class="o">.</span> <span class="n">However</span><span class="p">,</span> <span class="n">unlike</span>  <span class="err">``</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">()</span><span class="err">``</span> <span class="o">**</span><span class="n">plate</span><span class="o">**</span>  <span class="n">also</span> <span class="n">informs</span> <span class="n">inference</span> <span class="n">algorithms</span> <span class="n">that</span> <span class="n">the</span> <span class="n">variables</span> <span class="n">being</span> <span class="n">indexed</span> <span class="n">are</span> <span class="n">conditionally</span> <span class="n">independent</span><span class="o">.</span>
-<span class="err">```</span><span class="n">python</span>
-     <span class="c1"># This version declares vectorized independence:</span>
+</pre></div>
+<p>Vectorized plate is similar to <code>torch.arange()</code> in that it yields an array of indices by which other tensors can be indexed. However, unlike  <code>torch.arange()</code> <strong>plate</strong>  also informs inference algorithms that the variables being indexed are conditionally independent.</p>
+<div class="highlight"><pre><span></span><span class="c1"># This version declares vectorized independence:</span>
      <span class="k">with</span> <span class="n">plate</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">):</span>
             <span class="n">obs</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-<span class="err">```</span>
-<span class="n">Additionally</span><span class="p">,</span> <span class="n">plate</span> <span class="n">can</span> <span class="n">take</span> <span class="n">advantage</span> <span class="n">of</span> <span class="n">the</span> <span class="n">conditional</span> <span class="n">independence</span> <span class="n">assumptions</span> <span class="n">by</span> <span class="n">subsampling</span> <span class="n">the</span> <span class="n">indices</span> <span class="ow">and</span> <span class="n">informing</span> <span class="n">inference</span> <span class="n">algorithms</span> <span class="n">to</span> <span class="n">scale</span> <span class="n">various</span> <span class="n">computed</span> <span class="n">values</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">typically</span> <span class="n">used</span> <span class="n">to</span> <span class="n">subsample</span> <span class="n">minibatches</span> <span class="n">of</span> <span class="n">data</span><span class="p">:</span>
-<span class="err">```</span><span class="n">python</span>
-<span class="k">with</span> <span class="n">plate</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">subsample_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">ind</span><span class="p">:</span>
+</pre></div>
+<p>Additionally, plate can take advantage of the conditional independence assumptions by subsampling the indices and informing inference algorithms to scale various computed values. This is typically used to subsample minibatches of data:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">plate</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">subsample_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">ind</span><span class="p">:</span>
     <span class="n">batch</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
-<span class="err">```</span>
 </pre></div>
 
-    </div>
 </div>
 </div>
-
 </div>
-    
-
 </div>
 
 
