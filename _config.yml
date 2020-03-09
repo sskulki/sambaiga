@@ -98,7 +98,10 @@ kramdown:
 
 
 #pagination
-paginate: 5
- paginate_files:
- - index.html
+gems:
+  - jekyll-paginate
+
+paginate: 10
+paginate_path: /page:num/
  
+
