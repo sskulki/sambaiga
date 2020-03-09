@@ -94,3 +94,11 @@ kramdown:
   auto_ids: true
   hard_wrap: false
   syntax_highlighter: rouge
+
+
+
+#pagination
+paginate: 5
+ paginate_files:
+ - index.html
+ 
