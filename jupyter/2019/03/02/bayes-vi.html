@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Variational Inference (VI) | sambaiga</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Variational Inference (VI)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The post introduce the basics principle of bayesian varitaional inference as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms." />
+<meta property="og:description" content="The post introduce the basics principle of bayesian varitaional inference as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms." />
+<link rel="canonical" href="https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html" />
+<meta property="og:url" content="https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html" />
+<meta property="og:site_name" content="sambaiga" />
+<meta property="og:image" content="https://sambaiga.github.io/sambaiga/images/vi.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-02T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"The post introduce the basics principle of bayesian varitaional inference as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms.","headline":"Variational Inference (VI)","dateModified":"2019-03-02T00:00:00-06:00","datePublished":"2019-03-02T00:00:00-06:00","@type":"BlogPosting","image":"https://sambaiga.github.io/sambaiga/images/vi.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html"},"url":"https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/sambaiga/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://sambaiga.github.io/sambaiga/feed.xml" title="sambaiga" /><link rel="shortcut icon" type="image/x-icon" href="/sambaiga/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Variational Inference (VI) | sambaiga</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Variational Inference (VI)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The post introduce the basics principle of bayesian varitaional inference as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms." />
+<meta property="og:description" content="The post introduce the basics principle of bayesian varitaional inference as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms." />
+<link rel="canonical" href="https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html" />
+<meta property="og:url" content="https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html" />
+<meta property="og:site_name" content="sambaiga" />
+<meta property="og:image" content="https://sambaiga.github.io/sambaiga/images/vi.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-02T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"The post introduce the basics principle of bayesian varitaional inference as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms.","headline":"Variational Inference (VI)","dateModified":"2019-03-02T00:00:00-06:00","datePublished":"2019-03-02T00:00:00-06:00","@type":"BlogPosting","image":"https://sambaiga.github.io/sambaiga/images/vi.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html"},"url":"https://sambaiga.github.io/sambaiga/jupyter/2019/03/02/bayes-vi.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://sambaiga.github.io/sambaiga/feed.xml" title="sambaiga" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    // remove paragraph tags in rendered toc (happens from notebooks)
+    var toctags = document.querySelectorAll(".toc-entry")
+    toctags.forEach(e => (e.firstElementChild.innerText = e.firstElementChild.innerText.replace('¶', '')))
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/sambaiga/">sambaiga</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/sambaiga/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Variational Inference (VI)</h1><p class="page-description">The post introduce the basics principle of bayesian varitaional inference  as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-03-02T00:00:00-06:00" itemprop="datePublished">
+        Mar 2, 2019
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/sambaiga/categories/#jupyter">jupyter</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/sambaiga/sambaiga/tree/master/_notebooks/2019-03-02-bayes-vi.ipynb" role="button">
+<img class="notebook-badge-image" src="/sambaiga/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div><div class="px-2">
+    <a href="https://colab.research.google.com/github/sambaiga/sambaiga/blob/master/_notebooks/2019-03-02-bayes-vi.ipynb">
+        <img class="notebook-badge-image" src="/sambaiga/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Bayesian-Inference">Bayesian Inference </a></li>
+<li class="toc-entry toc-h2"><a href="#Variational-Inference-(VI)">Variational Inference (VI) </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Evidence-Lower-Bound-(ELBO)">Evidence Lower Bound (ELBO) </a></li>
+<li class="toc-entry toc-h3"><a href="#Mean-Field-Variational-Inference">Mean Field Variational Inference </a></li>
+<li class="toc-entry toc-h3"><a href="#Coordinate-Ascent-Variational-Inference-(CAVI)">Coordinate Ascent Variational Inference (CAVI) </a></li>
+<li class="toc-entry toc-h3"><a href="#Reference">Reference </a></li>
+</ul>
+</li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2019-03-02-bayes-vi.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Bayesian method offer a different paradigm for doing statistical analysis. It is practical method for making inferences from data using probability models. Unlike other statistical approach, bayesian models are easy to interpret and incorporate uncertainty. In bayesian method  we start with a belief which is also called a <strong>prior</strong>. We then update our belief after observing some data. The outcome is called a <strong>posterior</strong>. The process repeats as we keep on observing more data where the old <em>posterior</em> becomes a new <em>prior</em>. The  process employs the Bayes rule.</p>
+<p>Consider the Bayesian theorem, which allows us to use some knowledge or belief that we already have. Given data point $\mathcal{D} = \{x \in \mathbb{R}^{N\times d}, y \in \mathbb{R}^{N\times c}\}$. The Bayesian  approach  treat the latent variable or parameter $z$ as random variable with some prior distribution $p(z)$. This is the probability of parameters $z$ before hand.</p>
+$$
+p(z | \mathcal{D}  ) = \frac{p(\mathcal{D} | z )\cdot p(z)}{p(\mathcal{D})}
+$$<p>where</p>
+$$
+p(\mathcal{D}) = \int p(\mathcal{D} |z )\cdot p(z) dz
+$$<p>From the bayesian theorem above,  $z$ is the hypothesis about the world, and $$\mathcal{D}$$ is the data or evidence. The probability $p(\mathcal{D} \mid z)$ is called  <strong>likeli-hood</strong>; the probability of data given the latent variable and $p(\mathcal{D})$ is the <strong>marginal-likelihood</strong> and $p(z \mid \mathcal{D}  )$ is the <strong>posterior</strong>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Bayesian-Inference">
+<a class="anchor" href="#Bayesian-Inference" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bayesian Inference<a class="anchor-link" href="#Bayesian-Inference"> </a>
+</h2>
+<p>Given data set $\mathcal{D}$ and latent variable $z$ that relate $x$ and $y$ such that:
+$$
+y = f_{z}(x:z)
+$$
+The first step in bayesian inference is to identify the parameter $z$ and express our lack of knowledge  about this parameter in term of probability distribution $p(z)$. This is the prior knowledge about the parameter $z$. After that we express a <em>likelihood</em>  $p(\mathcal{D} \mid z)$ which tell us how the data $\mathcal{D}$ interact with  parameter $z$. Together the prior and the likelihood make our model (generative model). It tell us how we can simulate from our data.</p>
+<p>In <strong>training</strong> stage we apply Bayesian theorem to get posterior distribution:</p>
+$$
+p(z|\mathcal{D}) = \frac{p(\mathcal{D}|, z)}{p(\mathcal{D})}
+$$<p></p>
+<p>In testing stage we find <strong>predictive-distribution</strong></p>
+$$
+p(\hat{y}| x, \mathcal{D}) = \int p(\hat{y} | x, z)\cdot p(z | x, y) dz
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$y= f_{\theta}(x: \theta) + \in
+$
+ where $\in$ is the noise due to measurement and 
+$f_{\theta}(X: \theta)$ is the hypothesis function given;
+$
+f_{\theta}(X: \theta) = b + \sum_{i=1}^N w_i \phi (x_i) = \theta^T\cdot \phi(X)
+$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>where $\phi(X)$ is the basis function and $\theta$ is the model parameters such that 
+$
+\theta_{0} =b$$  and $$\phi_0=1
+$</p>
+<p>The output of this model is the single point estimate for the best model parameter. The Bayesian modelling approach to this problem offer a systematic framework for learning distribution over values of the parameters and not a single estimate. The bayesian linear regression model $y= f_{\theta}(x: \theta) + \in
+$ as a Gaussian  distribution such that:
+$
+p(y|x, \theta) = \mathcal{N}(y|f_{\theta}(x: \theta), \beta^{-1})
+$</p>
+<p>Assuming the data point are drawn independently and identically distributed the likelihood is expressed as:</p>
+$$
+p(Y| X, \theta) = \prod_{i=1}^N \mathcal{N}(y_i|f_{\theta}(x_i: \theta_i), \beta^{-1})
+$$<p>Let choose a prior that is conjugate to the likelihood</p>
+$$
+p(\theta|X) = \mathcal{N}(\theta|0, \alpha^{-1})
+$$<p>Thus the posterior is given as:</p>
+$$
+p(\theta|Y, X) \propto \mathcal{N}(\theta|0, \alpha^{-1})\cdot \prod_{i=1}^N \mathcal{N}(y_i|f_{\theta}(x_i: \theta_i), \beta^{-1})
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Variational-Inference-(VI)">
+<a class="anchor" href="#Variational-Inference-(VI)" aria-hidden="true"><span class="octicon octicon-link"></span></a>Variational Inference (VI)<a class="anchor-link" href="#Variational-Inference-(VI)"> </a>
+</h2>
+<p>In the previous section we show that inference in probabilist model is often intractable and introduced several approach used to approximate the inference. Variational Inference (VI) is one of the approach used to approximate difficult probability distribution by turning the calculation about model into optimization.</p>
+<p>Consider a probabilistic model which is joint distribution $p(x,z)$ of the latent variable  $$z$$ observed variables $x$. To draw inference on the latent variable $z$ we compute the posterior</p>
+$$
+p(z|x) = \frac{p(x,z)}{p(x)} = \frac{p(x|z)\cdot p(z)}{p(x)}
+$$<p>where 
+$
+p(x)=\int p(x|z)\cdot p(z) dz
+$
+To approximate $p(z\mid x)$ we first choose an approximating family of distribution $q(z)$ over latent variable  $z$. Then we find set of parameters that makes $q(z)$ close to posterior distribution $p(z\mid {\bf x})$. Thus VI approximate $p(z\mid x)$ with new distribution $q(z)$ such that $q(z)$ is close to $p(z\mid x)$. To achieve this we minimize KL divergence between $q(z)$ and $p(z\mid x)$ such that:</p>
+$$
+q^*(z) = \arg \min D_{KL}(q(z)||p(z|x))
+$$<p>where 
+$
+D_{KL}(q(z)||p(z|x)) = \int q(z)\log \frac{q(z)}{p(z|x)}
+$</p>
+<p>It clear that we can not minimize KL divergence since it is directly depend on posterior $p(z\mid x)$. However we can minimize a function that is equal to KL divergence plus constant. This function is called <strong>Evidence Lower Bound</strong>(ELBO) $\mathcal{L}_{VI}(q)$.</p>
+<h3 id="Evidence-Lower-Bound-(ELBO)">
+<a class="anchor" href="#Evidence-Lower-Bound-(ELBO)" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evidence Lower Bound (ELBO)<a class="anchor-link" href="#Evidence-Lower-Bound-(ELBO)"> </a>
+</h3>
+<p>To derive the ELBO we first consider the <a href="https://en.wikipedia.org/wiki/Jensen%27s_inequality">Jensen's inequality</a> which relates the value of a convex function of an integral to the integral of the convex function such that $f(\mathbb{E}[x]) \geq \mathbb{E}[f(x)]$ where $f(.)$ is the concave function. Since logarithmic are strictly concave function it is clear that</p>
+$$
+\log \int p(x)g(x) dx \geq \int p(x)\log g(x)
+$$<p>Let us consider a log of marginal evidence.</p>
+$$
+\begin{aligned} 
+\log p(x) &amp; = \log \int_z p(x,z) dz\\
+          &amp; =\log \int_z p(x,z)\cdot \frac{q(z)}{q(z)} dz \\
+          &amp; =\log \int_z q(z)\frac{p(x,z)}{q(z)} dz\\
+          &amp; =\log \left(\mathbb{E}_q[\frac{p(x,z)}{q(z)}] \right)\\
+          &amp;\geq \mathbb{E}_q[ \log p(x,z)] - \mathbb{E}_q[\log q(z)]
+\end{aligned}
+$$<p>The final line is the ELBO which is the lower bound for the evidence. Thus the evidence lower bound for probability model $$p(x,z)$$ and approximation $$q(z)$$ to the posterior is</p>
+$$
+\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(x,z)] - \mathbb{E}_q[\log q(z)]
+$$<p>We can now show that KL divergence to the posterior is equal to the negative ELBO plus constant.</p>
+$$
+\begin{aligned} 
+D_{KL}(q(z)||p(z|x)) &amp;= \int q(z)\log \frac{q(z)}{p(z|x)}\\
+                     &amp;= \mathbb{E}_q[\log q(z)] - \mathbb{E}_q[\log p(x,z)] + \mathbb{E}_q[\log p(x)]\\
+                     &amp;=-\left(\mathbb{E}_q[\log p(x,z)] - \mathbb{E}_q[\log q(z)] \right) +\log p(x)\\
+                     &amp;= -\mathcal{L}_{VI}(q) +\log p(x)\\
+\mathcal{L}_{VI}(q) &amp;=\log p(x) + D_{KL}(q(z)||p(z|x))
+\end{aligned}
+$$<p>From the equation above it clear that minimizing the KL divergence is equivalent to maximizing the ELBO. Recall that we want to find $$q(z)$$ such that KL divergence is small, the variational objective function becomes</p>
+$$
+q^*(z) = \arg \min D_{KL}(q(z)||p(z|x)) = \arg \max \mathcal{L}_{VI}(q)
+$$<h3 id="Mean-Field-Variational-Inference">
+<a class="anchor" href="#Mean-Field-Variational-Inference" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mean Field Variational Inference<a class="anchor-link" href="#Mean-Field-Variational-Inference"> </a>
+</h3>
+<p>One of the important question on VI, is how to construct the family of variational distributions from which we want to draw $q(z)$ from. The simplest family is where each latent parameter $z_i$ has its own
+independent distribution. This means that we can easily factorize the variational distributions into groups:</p>
+$$
+q(z_1, \ldots, z_m) = \prod_{i=1}^m q(z_i)
+$$<p>This family of distribuion are known as Mean-Field Variational Family that make use of <a href="https://en.wikipedia.org/wiki/Mean_field_theory">mean field theory</a>. Inference using this factorization is known as Mean-Field Variational Inference (MFVI).</p>
+<p>It possible to further parameterize the approximating distributions $q(z)$ with variational parameters $\lambda$ such that the approximating distribution become $q(z_i ; \lambda_i)$. For example if we set our family of approximating distributions as a set of
+independent gauasian distributions $\mathcal{N}(\mu_i, \sigma^2_i)$ and parameterize this distributions with the mean and variance where $\lambda_i = (\mu_i, \sigma^2_i)$ is the set of variational parameters.</p>
+<p>The common algorithms used in practise to do VI under mean filed assumptions are coordinate ascent optimization (CAVI) and stochastic gradient based method.</p>
+<h3 id="Coordinate-Ascent-Variational-Inference-(CAVI)">
+<a class="anchor" href="#Coordinate-Ascent-Variational-Inference-(CAVI)" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coordinate Ascent Variational Inference (CAVI)<a class="anchor-link" href="#Coordinate-Ascent-Variational-Inference-(CAVI)"> </a>
+</h3>
+<p>The CAVI algorithm derive variational updates by hand and perform coordinate ascent (iteratively updating each latent variable $z_i$) on the latent until convergence of the ELBO. A common procedure to conduct CAVI is:</p>
+<ul>
+<li>Choose variational distributions $q(z)$</li>
+<li>Compute ELBO;</li>
+<li>Optimize individual $q(z_i)$ ’s by taking the gradient for each latent variable;</li>
+<li>Repeat until ELBO converges.</li>
+</ul>
+<p>The coordinate ascent update for a latent variable can be derived by maximizing the ELBO function above. First, recall ELBO</p>
+$$
+\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(x,z)] - \mathbb{E}_q[\log q(z)]
+$$<p>
+Applying chain rule we can decomopse the joint  $p(x,z)$ as;
+$$
+p(x_{1:n}, z_{1:m}) = p(x_{1:n}) \prod_{i=1}^m p(z_i|z_{1:(i-1)}, x_{1:n})
+$$
+Using mean field approximation, we can decompose the entropy term of the ELBO as
+$$
+\mathbb{E}_q[\log q(z)] = \sum_{i=1}^m \mathbb{E}_q[\log q(z_i)]
+$$
+Under the above assumption the ELBO become:
+$$
+\mathcal{L}_{ELBO}(q) = \log p(x_{1:n}) + \sum_{i=1}^m \mathbb{E}_q[\log p(z_i|z_{1:(i-1)}, x_{1:n}) ] - \mathbb{E}_q[\log q(z_i)
+$$</p>
+<p>To find this $\arg \max_{q(z_i)} \mathcal{L}_{ELBO}(q)$ we take derivative of ELBO with respect to $q(z_i)$ using Lagrange multipliers and set the derivative to zero. It can be shown that the coordinate ascent update rule is equal to</p>
+$$
+q^*(z_i) \propto \{  \mathbb{E}_{q-i}[\log q(z_i,z_{\neg},x)]\}
+$$<p>where the notation $\neg$ denotes all indices other than the $i^{th}$</p>
+<p>Despite being very fast  method for some models  only  work with  conditionally conjugate models.</p>
+<h3 id="Reference">
+<a class="anchor" href="#Reference" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reference<a class="anchor-link" href="#Reference"> </a>
+</h3>
+<ol>
+<li>
+<a href="http://www.tamarabroderick.com/tutorial_2018_icml.html">ICML 2018 tutorial</a>:Variational Bayes and Beyond: Bayesian Inference for Big Data.</li>
+<li>
+<a href="https://www.shakirm.com/papers/VITutorial.pdf">Shakir Mohamed</a>:Variational Inference  for Machine Learning. </li>
+<li>
+<a href="https://emtiyaz.github.io/teaching/ds3_2018/ds3.html">DS3 workshop</a>:Approximate Bayesian Inference: Old and New.</li>
+<li>
+<a href="https://github.com/philschulz/VITutorial">Variational Inference and Deep Generative Models</a>:Variational Inference for NLP audiences</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="sambaiga/sambaiga"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/sambaiga/jupyter/2019/03/02/bayes-vi.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/sambaiga/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/sambaiga/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/sambaiga/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/sambaiga" title="sambaiga"><svg class="svg-icon grey"><use xlink:href="/sambaiga/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/sambaiga" title="sambaiga"><svg class="svg-icon grey"><use xlink:href="/sambaiga/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
