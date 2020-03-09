@@ -3,36 +3,36 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Inference in Pyro | sambaiga</title>
+<title>Vectorization and Distribution shapes in Pyro | sambaiga</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Inference in Pyro" />
+<meta property="og:title" content="Vectorization and Distribution shapes in Pyro" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis" />
-<meta property="og:description" content="This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis" />
+<meta name="description" content="This post present how to vectorize pyro codes" />
+<meta property="og:description" content="This post present how to vectorize pyro codes" />
 <link rel="canonical" href="https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html" />
 <meta property="og:url" content="https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html" />
 <meta property="og:site_name" content="sambaiga" />
-<meta property="og:image" content="https://sambaiga.github.io/sambaiga/images/vi.png" />
+<meta property="og:image" content="https://sambaiga.github.io/sambaiga/images/ppl-pyro-intro.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-04T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis","headline":"Inference in Pyro","@type":"BlogPosting","dateModified":"2020-03-04T00:00:00-06:00","datePublished":"2020-03-04T00:00:00-06:00","image":"https://sambaiga.github.io/sambaiga/images/vi.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html"},"url":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html","@context":"https://schema.org"}</script>
+{"description":"This post present how to vectorize pyro codes","headline":"Vectorization and Distribution shapes in Pyro","@type":"BlogPosting","dateModified":"2020-03-04T00:00:00-06:00","datePublished":"2020-03-04T00:00:00-06:00","image":"https://sambaiga.github.io/sambaiga/images/ppl-pyro-intro.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html"},"url":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/sambaiga/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://sambaiga.github.io/sambaiga/feed.xml" title="sambaiga" /><link rel="shortcut icon" type="image/x-icon" href="/sambaiga/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Inference in Pyro | sambaiga</title>
+<title>Vectorization and Distribution shapes in Pyro | sambaiga</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Inference in Pyro" />
+<meta property="og:title" content="Vectorization and Distribution shapes in Pyro" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis" />
-<meta property="og:description" content="This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis" />
+<meta name="description" content="This post present how to vectorize pyro codes" />
+<meta property="og:description" content="This post present how to vectorize pyro codes" />
 <link rel="canonical" href="https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html" />
 <meta property="og:url" content="https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html" />
 <meta property="og:site_name" content="sambaiga" />
-<meta property="og:image" content="https://sambaiga.github.io/sambaiga/images/vi.png" />
+<meta property="og:image" content="https://sambaiga.github.io/sambaiga/images/ppl-pyro-intro.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-04T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis","headline":"Inference in Pyro","@type":"BlogPosting","dateModified":"2020-03-04T00:00:00-06:00","datePublished":"2020-03-04T00:00:00-06:00","image":"https://sambaiga.github.io/sambaiga/images/vi.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html"},"url":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html","@context":"https://schema.org"}</script>
+{"description":"This post present how to vectorize pyro codes","headline":"Vectorization and Distribution shapes in Pyro","@type":"BlogPosting","dateModified":"2020-03-04T00:00:00-06:00","datePublished":"2020-03-04T00:00:00-06:00","image":"https://sambaiga.github.io/sambaiga/images/ppl-pyro-intro.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html"},"url":"https://sambaiga.github.io/sambaiga/jupyter/2020/03/04/ppl-pyro-two.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -106,13 +106,13 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Inference in Pyro</h1><p class="page-description">This post present inference in Pyro, how to use Pyro primitives and the effect handling library (pyro.poutine) to build custom tools for analysis</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-04T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Vectorization and Distribution shapes in Pyro</h1><p class="page-description">This post present how to vectorize pyro codes</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-04T00:00:00-06:00" itemprop="datePublished">
         Mar 4, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
     
     
-      2 min read
+      5 min read
     
 </span></p>
 
@@ -145,6 +145,11 @@ window.onload = wrap_img;
     <ul class="section-nav">
 <li class="toc-entry toc-h2"><a href="#Introduction">Introduction </a></li>
 <li class="toc-entry toc-h2"><a href="#Plate-statement">Plate statement </a></li>
+<li class="toc-entry toc-h2"><a href="#Distribution-shapes">Distribution shapes </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Reshaping-distributions">Reshaping distributions </a></li>
+</ul>
+</li>
 </ul><!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
@@ -185,15 +190,35 @@ window.onload = wrap_img;
 <span class="kn">import</span> <span class="nn">pyro</span>
 <span class="kn">import</span> <span class="nn">pyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
 <span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">constraints</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">pyro</span><span class="o">.</span><span class="n">set_rng_seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
 
+    </div>
+</div>
+</div>
 
-<span class="k">def</span> <span class="nf">model_global_trend</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">slope</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">'slope'</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.</span><span class="p">))</span>
-    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">'sigma'</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">constraints</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">positive</span><span class="p">)</span>
-    <span class="n">intercept</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s1">'intercept'</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">13.</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
-        <span class="n">log_p_hat</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">intercept</span>
-        <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">'y_</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">dist</span><span class="o">.</span><span class="n">LogNormal</span><span class="p">(</span><span class="n">log_p_hat</span><span class="p">,</span> <span class="n">sigma</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">model_</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"slope"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"intercept"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"count_</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">dist</span><span class="o">.</span><span class="n">Poisson</span><span class="p">(</span><span class="n">rate</span><span class="p">),</span>
+                                <span class="n">obs</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -229,6 +254,620 @@ window.onload = wrap_img;
     <span class="n">batch</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
 </pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can additionally nest plates, e.g. if you have per-pixel independence:</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">"x_axis"</span><span class="p">,</span> <span class="mi">320</span><span class="p">):</span>
+    <span class="c1"># within this context, batch dimension -1 is independent</span>
+    <span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">"y_axis"</span><span class="p">,</span> <span class="mi">200</span><span class="p">):</span>
+        <span class="c1"># within this context, batch dimensions -2 and -1 are independent</span>
+</pre></div>
+<p>Finaly you can declare multiple plates and use them as reusable context managers. For example if you want to mix and match plates for e.g. noise that depends only on x, some noise that depends only on y, and some noise that depends on both</p>
+<div class="highlight"><pre><span></span><span class="n">x_axis</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">"x_axis"</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">y_axis</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">"y_axis"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">x_axis</span><span class="p">:</span>
+    <span class="c1"># within this context, batch dimension -2 is independent</span>
+<span class="k">with</span> <span class="n">y_axis</span><span class="p">:</span>
+    <span class="c1"># within this context, batch dimension -3 is independent</span>
+<span class="k">with</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">y_axis</span><span class="p">:</span>
+    <span class="c1"># within this context, batch dimensions -3 and -2 are independent</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">model_</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"slope"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"intercept"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s1">'N'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>                        
+        <span class="n">log_y_hat</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">t</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span> <span class="o">+</span> <span class="n">intercept</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">LogNormal</span><span class="p">(</span><span class="n">log_y_hat</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Distribution-shapes">
+<a class="anchor" href="#Distribution-shapes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Distribution shapes<a class="anchor-link" href="#Distribution-shapes"> </a>
+</h2>
+<p>Unlike PyTorch Tensors which have  a single .shape attribute, pyro Distributions have two shape <strong>batch_shape</strong> and <strong>event_shape</strong>. These two combine to define the total shape of a sample. The batch_shape denote conditionally independent random variables, whereas .event_shape denote dependent random variables (ie one draw from a distribution). Because the dependent random variables define probability together, the .log_prob() method only produces a single number for each event of shape .event_shape.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">batch_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">event_shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>torch.Size([])
+torch.Size([])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Distributions can be batched by passing in batched parameters.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">batch_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">event_shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>torch.Size([50])
+torch.Size([])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([50])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the two examples above, we observe that univariate distributions have empty event shape (because each number is an independent event). Let also consider multivariate distribution.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">md</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">MultivariateNormal</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">batch_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">event_shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>torch.Size([])
+torch.Size([3])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([3])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can also create batched multivariate distribution as follows.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">md</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">MultivariateNormal</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">expand</span><span class="p">([</span><span class="mi">50</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">batch_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">md</span><span class="o">.</span><span class="n">event_shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>torch.Size([50])
+torch.Size([3])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([50, 3])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Because Multivariate distributions have nonempty <strong>.event_shape</strong>, the shapes of .sample() and .log_prob(x) differ:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">md</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([50])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <strong>Distribution.sample()</strong> method also takes a sample_shape parameter that indexes over independent identically   distributed (iid) random varables, such that:</p>
+<div class="highlight"><pre><span></span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">sample_shape</span> <span class="o">+</span> <span class="n">batch_shape</span> <span class="o">+</span> <span class="n">event_shape</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_sample</span> <span class="o">=</span><span class="n">md</span><span class="o">.</span><span class="n">sample</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">y_sample</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([10, 50, 3])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Reshaping-distributions">
+<a class="anchor" href="#Reshaping-distributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reshaping distributions<a class="anchor-link" href="#Reshaping-distributions"> </a>
+</h3>
+<p>You can treat a univariate distribution as multivariate by calling the <code>.to_event(n)</code> property where <strong>n</strong> is the number of batch dimensions (from the right) to declare as dependent.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">batch_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">event_shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>torch.Size([50])
+torch.Size([3])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While working with distributions in pyro it is essential to note that:</p>
+<ol>
+<li>Samples have shape batch_shape + event_shape, </li>
+<li>
+<code>.log_prob(x)</code> values have shape batch_shape. </li>
+<li>You’ll need to ensure that <code>batch_shape</code> is carefully controlled by either trimming it down with <code>.to_event(n)</code> or by declaring dimensions as independent via <code>pyro.plate</code>.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Often in Pyro we’ll declare some dimensions as dependent even though they are in fact independent. This allows us to easily swap in a MultivariateNormal distribution later, but aslo it simplifies the code as  we don’t need a plate. Consider the following two codes</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span><span class="o">.</span><span class="n">to_event</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([10])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">pyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s2">"y_plate"</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># .expand([10]) is automatic</span>
+  
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([10])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the two code examples, the second version with plate informs Pyro that it can make use of conditional independence information when estimating gradients, whereas in the first version Pyro must assume they are dependent (even though the normals are in fact conditionally independent).</p>
 
 </div>
 </div>
