@@ -23,9 +23,6 @@ group :jekyll_plugins do
   gem 'jekyll-toc'
   gem 'jekyll-gist'
   gem 'jekyll-paginate'
-  gem "academic"
-  
-  
 end
 
 gem "kramdown-math-katex"
