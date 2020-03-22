@@ -18,40 +18,13 @@
   {% endif %}
 
 
-
   {%- seo -%}
   <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
   {%- endif -%}
-
-  {% assign pagename = page.path | split:"." | first %}
-
-  {% if page.layout == "post" %}
-    {% assign i18n_posts = site.posts | where_exp:"p","p.path contains pagename" %}
-  {% else %}
-    {% assign i18n_posts = site.pages | where_exp:"p","p.path contains pagename" %}
-  {% endif %}
-
-  {% for t_lang in site.langs %}
-    {% unless t_lang == plang %}
-      {% assign t = i18n_posts | where:"lang",t_lang | first %}
-
-      {% if t %}
-      <link rel="alternate" hreflang="{{ t_lang }}" href="{{ site.url }}{{ t.url }}" />
-      {% endif %}
-    {% endunless %}
-  {% endfor %}
-
-  {% if site.piwik %}
-  {% include piwik.html %}
-  {% endif %}
-
-  {% if jekyll.environment == 'production' %}
-  {% endif %}
 
   {%- include custom-head.html -%}
   
