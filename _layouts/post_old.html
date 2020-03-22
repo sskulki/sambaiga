@@ -2,9 +2,9 @@
 layout: default
 ---
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <div class="wrapper">
     <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
     {%- if page.description -%}
     <p class="page-description">{{ page.description | escape }}</p>
@@ -47,7 +47,6 @@ layout: default
         </div>
       {% endif -%}
     {% endif -%}
-  </div>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">

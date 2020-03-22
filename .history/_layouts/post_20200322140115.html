@@ -1,0 +1,36 @@
+---
+layout: default
+---
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    {% endif %}
+      {% if page.thumbnail %}
+      <img class="post-thumbnail" src="/assets/{{ page.thumbnail }}" alt="{{ page.title | escape }}"/>
+      {% endif %}
+      <div class="wrapper">
+        <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
+        <p class="post-meta">
+          <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+            {% include _i18n/date.html date=page.date %}
+          </time>
+          {% include _i18n/last_modified_at.html object=page %}
+          {% if page.author %} • 
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>
+          {% endif %}
+        </p>
+        <h3 class="post-summary">{{ page.summary }}</h3>
+      </div>
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content | toc  }}
+  </div>
+  {%- if page.comments -%}
+    {%- include utterances.html -%}
+  {%- endif -%}
+  {%- if site.disqus.shortname -%}
+    {%- include disqus_comments.html -%}
+  {%- endif -%}
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
