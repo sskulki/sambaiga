@@ -114,14 +114,6 @@ gems:
 paginate: 5
 paginate_path: /page:num/
 
-paginate_multiple:
-  - paginate: 10
-    paginate_path: /page:num/'
-    sub_dir: '/projects'
-  - paginate: 10
-    paginate_path: '/page:num/'
-    sub_dir: '/talks'
-
   # -----------------------------------------------------------------------------
 # Collections
 # -----------------------------------------------------------------------------

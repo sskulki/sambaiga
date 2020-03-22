@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<div class="home">
+    {%- if page.title -%}
+      <h1 class="page-heading">{{ page.title }}</h1>
+  
+    {%- endif -%}
+  
+
+{% for post in site.projects reversed %}
+ 
+<ul class="post-list">
+  
+    {% include post-li.html %}
+
+</ul>
+{% endfor %}
+  
+</div>
+      

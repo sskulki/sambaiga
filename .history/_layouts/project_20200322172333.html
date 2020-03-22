@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<div class="home">
+    {% if site.paginate %}
+    {% assign posts = paginator.projects%}
+  {% else %}
+    {% assign posts = site.projects %}
+  {% endif %}
+
+    <ul class="post-list">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {% for post in site.projects reversed %}
+        <li>
+          {%- if site.show_image -%}
+              {%- include post_list_image_card.html -%}
+          {% else %}
+          {% include post-li.html %}
+          {%- endif -%}
+        </li>
+        {%- endfor -%}
+      </ul>   
+
+  
+</div>
+      

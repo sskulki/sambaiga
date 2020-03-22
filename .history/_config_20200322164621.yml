@@ -78,7 +78,7 @@ plugins:
   - jekyll-relative-links
   - jekyll-seo-tag
   - jekyll-remote-theme
-  
+  - ['jekyll/scholar']
 
 remote_theme: jekyll/minima
 
@@ -114,14 +114,6 @@ gems:
 paginate: 5
 paginate_path: /page:num/
 
-paginate_multiple:
-  - paginate: 10
-    paginate_path: /page:num/'
-    sub_dir: '/projects'
-  - paginate: 10
-    paginate_path: '/page:num/'
-    sub_dir: '/talks'
-
   # -----------------------------------------------------------------------------
 # Collections
 # -----------------------------------------------------------------------------
@@ -137,27 +129,3 @@ collections:
     permalink: /resources/:path/
  
 
-scholar:
-
-  last_name: Faustine
-
-  #style: apa
-  style: assets/bibliography/bibliography.csl
-  locale: en
-
-  sort_by: year
-  order: descending
-  bibliography_list_tag: ul
-
-  source: /_bibliography/
-  bibliography: papers
-  bibliography_template: bib
-
-  replace_strings: true
-  join_strings: true
-
-  details_dir: bibliography
-  details_layout: bibtex.html
-  details_link: Details
-
-  query: "@*"

@@ -26,7 +26,6 @@ group :jekyll_plugins do
   gem 'jekyll-gist'
   gem 'jekyll-paginate'
   gem "academic"
-  gem "jekyll-paginate-multiple"
 end
 
 gem "kramdown-math-katex"

@@ -1,0 +1,17 @@
+---
+layout: home
+---
+<div class="home">
+    
+
+{% for post in site.projects reversed %}
+ 
+<ul class="post-list">
+  
+    {% include post-li.html %}
+
+</ul>
+{% endfor %}
+  
+</div>
+      
