@@ -2,8 +2,7 @@
 layout: default
 ---
 
-<div class="home">
-  {%- if page.title -%}
+{%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
 
   {%- endif -%}
@@ -28,7 +27,7 @@ layout: default
     {%- endif -%}
     <ul class="post-list">
       {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-      {%- for post in posts -%}
+      {%- for post in talks -%}
       <li>
         {%- if site.show_image -%}
             {%- include post_list_image_card.html -%}
@@ -59,4 +58,6 @@ layout: default
 
   {%- endif -%}
 
-</div>
+
+
+

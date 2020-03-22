@@ -1,0 +1,29 @@
+---
+layout: default
+---
+
+{%- if talks.size > 0 -%}
+{%- if page.list_title -%}
+<ul class="post-list">
+
+{%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+ {% for post in site.talks reversed %}
+      <li>
+        {%- include post_list.html -%}
+  <ul class="post-list">
+    
+      {% include talk-li.html %}
+  
+  </ul>
+  {% endfor %}
+  {%- endif %}
+
+  {%- endif -%}
+
+
+
+
+
+
+ 
+  

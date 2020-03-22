@@ -1,0 +1,6 @@
+---
+layout: resource
+title: Resources
+---
+
+

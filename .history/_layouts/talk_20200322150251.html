@@ -2,8 +2,7 @@
 layout: default
 ---
 
-<div class="home">
-  {%- if page.title -%}
+{%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
 
   {%- endif -%}
@@ -26,18 +25,15 @@ layout: default
     {%- if page.list_title -%}
       <h2 class="post-list-heading">{{ page.list_title }}</h2>
     {%- endif -%}
-    <ul class="post-list">
-      {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-      {%- for post in posts -%}
-      <li>
-        {%- if site.show_image -%}
-            {%- include post_list_image_card.html -%}
-        {% else %}
-            {%- include post_list.html -%}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
+    {% for post in site.talks reversed %}
+   
+  <ul class="post-list">
+    
+      {% include talk-li.html %}
+  
+  </ul>
+ 
+  {% endfor %}
 
     {% if site.paginate %}
       <div class="pager">
@@ -59,4 +55,9 @@ layout: default
 
   {%- endif -%}
 
-</div>
+
+
+
+
+ 
+  

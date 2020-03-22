@@ -1,0 +1,35 @@
+<footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright {{ site.time | date: '%Y' }} {{ site.name }}
+    {{ site.footer_text }}
+    {% if site.last_updated %}
+        Last updated: {{ site.last_updated }}.
+    {% endif %}
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+{% if page.layout == "post" %}
+<script src="{{ site.base }}/assets/js/katex_init.js"></script>
+{% endif %}
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="{{ site.base }}/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
